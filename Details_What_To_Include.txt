@@ -1,0 +1,40 @@
+Group Presentations
+
+Each group presents for 10 minutes including Q&A — roughly 7 minutes to present, 3 minutes for questions from the cohort
+and coaches.
+
+Presentation must include:
+	•	The business questions your group chose to investigate
+	•	A summary of the dataset and any data quality issues you found
+	•	At least 3 visualisations with clear titles and axis labels
+	•	3 or more data-backed insights stated in plain language
+	•	One recommendation a non-technical decision-maker could act on
+
+===========================================================================================================================
+Relevance — Do your business questions matter? Would a real decision-maker care?
+
+Rigour — Is the data clean? Can the numbers be trusted?
+
+Clarity — Would a non-technical audience understand your insights without reading the code?
+
+Storytelling — Do the visualisations support a clear narrative with a beginning, middle, and recommendation?
+
+===========================================================================================================================
+# 1. Business Case (2–3 bullets)
+
+Briefly describe:
+- Business scenario (e.g. talent acquisition, policy analyst, career coach).
+- *Objective*: What decision/problem are you helping to address?
+- Target users and value: How will this dashboard/app help them?
+> Example: “Help a talent acquisition team identify which roles and skills are most in demand so they can prioritise
+hiring and sourcing
+
+===========================================================================================================================
+
+
+
+===========================================================================================================================
+
+
+
+===========================================================================================================================
