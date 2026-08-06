@@ -1,0 +1,32 @@
+=============================================
+           DATASET OVERVIEW
+=============================================
+ Total Rows    : 1,048,585
+ Total Columns : 22
+ Memory Usage  : 921.31 MB
+=============================================
+
+--- Column Breakdown ---
+                                   Data Type  Non-Null  Null Count  Missing (%)  Unique Values
+categories                            object   1044597        3988         0.38          21125
+employmentTypes                       object   1044597        3988         0.38              8
+metadata_expiryDate                   object   1044597        3988         0.38            453
+metadata_isPostedOnBehalf               bool   1048585           0         0.00              2
+metadata_jobPostId                    object   1044597        3988         0.38        1044597
+metadata_newPostingDate               object   1044597        3988         0.38            431
+metadata_originalPostingDate          object   1044597        3988         0.38            603
+metadata_repostCount                   int64   1048585           0         0.00              3
+metadata_totalNumberJobApplication     int64   1048585           0         0.00            376
+metadata_totalNumberOfView             int64   1048585           0         0.00           1552
+minimumYearsExperience                 int64   1048585           0         0.00             50
+numberOfVacancies                      int64   1048585           0         0.00            108
+occupationId                         float64         0     1048585       100.00              0
+positionLevels                        object   1044597        3988         0.38              9
+postedCompany_name                    object   1044597        3988         0.38          53151
+salary_maximum                         int64   1048585           0         0.00           2621
+salary_minimum                         int64   1048585           0         0.00           2138
+salary_type                           object   1044597        3988         0.38              1
+status_id                              int64   1048585           0         0.00              1
+status_jobStatus                      object   1044597        3988         0.38              3
+title                                 object   1044597        3988         0.38         377084
+average_salary                       float64   1048585           0         0.00           4277
