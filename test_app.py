@@ -100,7 +100,9 @@ avg_salary_by_category = (
     filtered_df.groupby("category_names")["average_salary"].mean().sort_values(ascending=False)
 )
 
-tab1, tab2, tab3 = st.tabs(["Trends", "Categories", "Salary"])
+#tab1, tab2, tab3 = st.tabs(["Trends", "Categories", "Salary"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Trends", "Salary", "Categories", "Categories wise Postings", "position Levels"])
+
 
 with tab1:
     st.subheader("Postings Over Time")
@@ -109,21 +111,28 @@ with tab1:
     st.area_chart(postings_by_month.cumsum())
 
 with tab2:
-    st.subheader("Average Salary by Category")
-    st.bar_chart(avg_salary_by_category)
-
-with tab3:
     st.subheader("Experience vs Salary")
     st.scatter_chart(filtered_df, x="minimumYearsExperience", y="average_salary")
 
-top_companies = filtered_df['positionLevels'].value_counts().head(5)
-    # Extract the sizes (the counts) and labels (the company names) dynamically
-sizes = top_companies.values
-labels = top_companies.index
+with tab3:
+    st.subheader("Average Salary by Category")
+    st.bar_chart(avg_salary_by_category)
 
-fig, ax = plt.subplots()
-ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+#Create a horizontal bar chart of categories and count of  job postings
+with tab4:
+    st.subheader("Categories by Job Postings")
+    category_counts = filtered_df.groupby("category_names").size()
+    st.bar_chart(category_counts.sort_values(ascending=True), use_container_width=True)
+
+with tab5:
+    top_companies = filtered_df['positionLevels'].value_counts().head(5)
+    # Extract the sizes (the counts) and labels (the company names) dynamically
+    sizes = top_companies.values
+    labels = top_companies.index
+
+    fig, ax = plt.subplots()
+    ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
     #st.subheader("Job Type Distribution")
     # 3. Display the chart in Streamlit
-st.pyplot(fig) 
+    st.pyplot(fig) 
