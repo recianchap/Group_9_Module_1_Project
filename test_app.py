@@ -51,11 +51,154 @@ st.header("Trends & Breakdown")
 
 ### Function to calculate
 
-tab1, tab2, tab3 = st.tabs(["TBC", "Salary", "Categories"])
+tab1, tab2, tab3 = st.tabs(["Experience Requirements", "Salary", "Categories"])
 
 with tab1:
-    st.subheader("TBC")
+    st.subheader("Experience Requirements")
 
+    # ========================================
+    # Prepare Data
+    # ========================================
+
+    # Convert experience to numeric
+    df["minimumYearsExperience"] = pd.to_numeric(
+        df["minimumYearsExperience"],
+        errors="coerce"
+    )
+
+    # Remove missing values
+    df = df.dropna(
+        subset=[
+            "category_names",
+            "positionLevels",
+            "minimumYearsExperience"
+        ]
+    )
+
+    # Remove unrealistic values
+    df = df[df["minimumYearsExperience"] <= 20]
+
+    # ========================================
+    # Create Experience Groups
+    # ========================================
+
+    def experience_group(years):
+        if years <= 1:
+            return "Entry Level (0–1 yrs)"
+        elif years <= 5:
+            return "Early Career (2–5 yrs)"
+        else:
+            return "Experienced (5+ yrs)"
+
+    df["experience_group"] = df["minimumYearsExperience"].apply(experience_group)
+
+    # ========================================
+    # Top 5 sectors with the most entry-level jobs
+    # ========================================
+
+    entry_df = df[
+        df["experience_group"] == "Entry Level (0–1 yrs)"
+    ]
+
+    top5_categories = (
+        job_categories.groupby("category_name")
+        .size()
+        .sort_values(ascending=False)
+        .head(5)
+        .index
+        .tolist()
+    )
+
+    # ========================================
+    # Sidebar filter
+    # ========================================
+
+    all_categories = sorted(
+        job_categories["category_name"].dropna().unique()
+    )
+
+    selected_categories = st.multiselect(
+        "Select industries",
+        options=all_categories,
+        default=top5_categories
+    )
+
+    # ========================================
+    # Filter the data
+    # ========================================
+    filtered = df[
+        df["category_names"].isin(selected_categories)
+    ].copy()
+
+    filtered["job_count"] = 1
+
+    # ========================================
+    # Aggregate Data
+    # ========================================
+    sunburst = (
+        filtered.groupby(
+            [
+                "category_names",
+                "experience_group",
+                "positionLevels",
+            
+            ],
+            as_index=False
+        )
+        .agg(
+            Job_Postings=("job_count", "sum"),
+            Avg_Experience=("minimumYearsExperience", "mean")
+        )
+    )
+
+    sunburst["Avg_Experience"] = (
+        sunburst["Avg_Experience"]
+        .round(1)
+    )
+    # ========================================
+    # Create Sunburst
+    # ========================================
+
+    fig = px.sunburst(
+        sunburst,
+        path=[
+            "category_names",
+            "experience_group",
+            "positionLevels"
+        ],
+        values="Job_Postings",
+        color="Avg_Experience",
+        color_continuous_scale="RdYlGn_r",
+        hover_data={
+            "Job_Postings": True,
+            "Avg_Experience": ":.1f"
+        },
+        title="Explore Experience Requirements by Industry"
+    )
+
+    fig.update_layout(
+        height=800
+    )
+
+    st.plotly_chart(
+        fig,
+        # width='stretch'
+        use_container_width=True
+    )
+
+    # ========================================
+    # Guidance
+    # ========================================
+
+    st.markdown("""
+    ### How to read this chart
+
+    - *Centre:* Career Sector
+    - *Middle Ring:* Position Level
+    - *Outer Ring:* Experience Requirement
+
+    💡 Click on any sector or position level to drill down and explore the experience requirements.
+    """)
 
 with tab2:
 
@@ -132,6 +275,7 @@ with tab2:
 
 #Create a horizontal bar chart of categories and count of  job postings
 with tab3:
+   
     st.subheader("📊 Job Postings by Category")
 
     # --- 1. Efficient Aggregation with Caching ---
